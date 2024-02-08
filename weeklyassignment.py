@@ -13,7 +13,8 @@ import os
 class Student:
 
     students_list = [ ]
-
+    
+    #defining  Class constants for threshold values 
     min_threshold =  33
     max_threshold =  80
     category_list = { }
@@ -33,25 +34,30 @@ class Student:
     def __init__(self):
 
         self.name =  self.get_valid_input("Enter Student Name :     ",str,condition = self.is_alphabetic)
+        # not able to get required input 
         if self.name  is None :
          sys.exit()
 
+
         self.roll_no = self.get_valid_input("Enter Student Roll No:   " ,int, lambda x : x > 0 )
 
+        # not able to get required input 
         if self.roll_no is None :
           sys.exit()
 
         self.age =  self.get_valid_input("Enter Student Age :      ", int, lambda x : x > 0)
 
+        # not able to get required input 
         if self.age is  None :
           sys.exit()
         self.marks_list= []
         Student.students_list.append(self)
 
 
-
+    #to check for valid input 
     def get_valid_input(self, prompt, data_type, condition=None):
      i = 0
+     #will check for atmost 2 times   
      while i < 2:
         user_input = input(prompt)
 
@@ -70,13 +76,13 @@ class Student:
        return None
 
 
-
-    def is_alphabetic(self, value):
+    #function to check if string is alphabetic
+    def is_alphabetic(self, value): 
      return value.isalpha()
 
-
+    #function to add marks for student
     def addMarks(self):
-
+      #taking input for  5 subjects    
       for subject in range(1,6):
            marks = self.get_valid_input(f"Enter marks of Sub{subject}      ", int, lambda x : x >=0 and x <=100)
            self.marks_list.append(marks)
@@ -96,6 +102,7 @@ class Student:
 
       self.avg = sum // len( self.marks_list)
 
+      #deciding category of student   
       if self.avg >=  80 and  not fail :
           self.category = 1
           Student.category_list[self.category].append(self)
@@ -109,7 +116,7 @@ class Student:
 
           Student.category_list[self.category].append(self)
 
-
+    #overwriting __str__ function  
     def __str__(self):
      return(f"Student Details: \n\
               Name :         {self.name}\n\
@@ -127,6 +134,7 @@ def addStudent() :
 def clearScreen() :
     os.system('cls')
 
+#function to print all students detail
 def getStudents():
 
   l = len(Student.students_list)
@@ -138,11 +146,13 @@ def getStudents():
   for item in Student.students_list:
       print(item)
 
+#function to get first five toppers
 def getTopFiveToppers():
 
-
+     #create list of qualified students
      qualified_students= [student for student  in Student.students_list  if student.marks_list[0] >= Student.min_threshold and student.marks_list[1] >= Student.min_threshold and student.marks_list[2] >= Student.min_threshold  and student.marks_list[3] >= Student.min_threshold  and student.marks_list[4] >= Student.min_threshold ]
 
+     #make a list of toppers , on basis of avg score in descending order
      toppers = sorted(qualified_students, key = lambda x: x.avg, reverse = True)[:5]
      #new_sorted_list= sorted(Student.students_list, key = lambda x: x.avg, reverse = True)
      l = len(toppers)
@@ -150,7 +160,7 @@ def getTopFiveToppers():
      if stu_count ==0:
        print("Currently , No student is enrolled. Firstly add a student")
        return
-
+     # if no student is eligible  
      elif l ==0 :
        print("Currently, No student has fulfilled the criteria of minimum Threshold Marks to pass")
 
@@ -167,7 +177,7 @@ def getTopFiveToppers():
 
 
 
-
+#function to return students who requires PersonalAttention
 def getPersonalAttentionReqStudents():
 
      stu_count = len(Student.students_list)
@@ -175,7 +185,7 @@ def getPersonalAttentionReqStudents():
      if stu_count ==0:
        print("Currently , No student is enrolled. Firstly add a student")
        return
-
+     #if no student in list  who requiers personal attention
      elif l ==0 :
        print("Currently, No student  who requires Personal Attentions, ")
 
