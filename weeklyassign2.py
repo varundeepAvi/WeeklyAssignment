@@ -19,7 +19,7 @@ game_rules = ''' There are 2 Question sections in this game
 '''
 mcq_quiz = {}
 ows_quiz = {}
-class Question:
+class Question:  # class for storing  question and related attributes
    def __init__(self, number ,q_type ,statement, options = None , answer = None ):
      self.number = number
      self.q_type = q_type
@@ -27,14 +27,15 @@ class Question:
      self.options = options
      self.answer = answer
 
-def parse_question(line):
+def parse_question(line): 
+    "Function to parse question from line , extracting diff. parts from question, example question type, question number, etc
    parts = line.strip().split('|')
-   number =parts[0]
-   q_type = parts[1]
-   statement =  parts[2]
+   number =parts[0] #question number 
+   q_type = parts[1]  #question type
+   statement =  parts[2]  #Question statement
    if  q_type == 'mcq':
-      options = parts[3:7]
-      answers = parts[7].strip('#')
+      options = parts[3:7]   #slicing  options
+      answers = parts[7].strip('#')  
       return Question(number, q_type, statement, options, answers)
    elif q_type =='one word':
       answers = parts[3].strip('#')
@@ -42,7 +43,7 @@ def parse_question(line):
 
 
 
-def read_questions_from_file(filename):
+def read_questions_from_file(filename):  # read file from question
     questions = []
     with open(filename, 'r') as file:
        for line  in file:
@@ -54,9 +55,9 @@ def read_questions_from_file(filename):
 
 
 
-def create_quiz(questions):
-   global mcq_quiz
-   global ows_quiz
+def create_quiz(questions): # create quiz by passing questions
+   global mcq_quiz  #list for mcq
+   global ows_quiz  #list for ows
 
    for question in questions:
       if question.q_type == 'mcq':
@@ -68,7 +69,7 @@ def create_quiz(questions):
 
 
 
-def ask_question(question):
+def ask_question(question):  # to print question on terminal and taking input from user
   print(question.statement)
   if question.q_type == 'mcq':
      print("Options:")
@@ -92,9 +93,9 @@ def main():
    create_quiz(questions)
    random_questions_mcq = list(mcq_quiz.values())
    random_questions_ows = list(ows_quiz.values())
-
-   random.shuffle(random_questions_mcq)
-   random.shuffle(random_questions_ows)
+    
+   random.shuffle(random_questions_mcq)  #shuffling the list of mcq
+   random.shuffle(random_questions_ows)  #shuffling the list of ows
 
 
    total_questions_mcq = len(random_questions_mcq)
@@ -103,6 +104,7 @@ def main():
    print(game_rules)
    correct_answers_mcq = 0
    i = 1
+   #for mcqs 
    for question in random_questions_mcq:
       print(f'{i}.')
       i += 1
@@ -118,6 +120,8 @@ def main():
 
    correct_answers_ows = 0
    i =1
+
+   #for one word substitite 
    for question in random_questions_ows:
       print(f'{i}.')
       i += 1
@@ -133,6 +137,7 @@ def main():
        print("Incorrect.")
       print()
 
+   #printing final scores
    total_score= 0
    print("Score Card:- ")
    print(   "Your Marks list  in MCQ ")
